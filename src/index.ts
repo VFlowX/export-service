@@ -2,9 +2,8 @@ import 'dotenv/config'
 import bodyParser from 'body-parser';
 import https from 'https';
 import express from 'express';
-
-import postgreRouter from "@routes/postgre";
-import importRouter from "@routes/importXlsx";
+import * as fs from 'fs-extra'
+import exportRouter from "@routes/exportXLSX";
 
 
 https.globalAgent.options.rejectUnauthorized = false;
@@ -27,8 +26,10 @@ app.use((err: any, _req: any, res: any, _next: any) => {
     error: err,
   });
 });
-app.use('/import', importRouter)
-app.use('/postgre', postgreRouter)
+
+fs.ensureDir('uploads/template/')
+fs.ensureDir('uploads/xlsx/')
+app.use('/export', exportRouter)
 app.listen(9000, async () => {
   console.log("Server is up! http://0.0.0.0:9000");
 })
