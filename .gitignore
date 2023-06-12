@@ -84,4 +84,4 @@ shared/
 
 #upload
 uploads/xlsx/*
-uploads/template/*
+uploads
