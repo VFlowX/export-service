@@ -20,7 +20,7 @@ var upload = multer({
     },
     filename: function (_req, file, cb) {
       // cb(null, `${path.basename(file.originalname)}_${Date.now()}${path.extname(file.originalname)}`);
-      cb(null, `${file.originalname}`);
+      cb(null, `${file.originalname.normalize("NFD").replace(/\p{Diacritic}/gu, "").replaceAll('đ', 'd').replaceAll(' ', '')}`);
     },
   }),
   fileFilter: (_req, file, cb) => {
@@ -36,8 +36,8 @@ router.post('/ping', upload.single('file'), async function (_req, res) {
 })
 
 router.post('/template/upload', upload.single('template'), async function (req, res) {
-  console.log('File Template uploaded', req.file?.originalname);
-  res.status(200).send("Service is up and running!")
+  console.log(req.file)
+  res.status(200).send(req.file)
 })
 
 router.get('/template/list', upload.single('template'), async function (req, res) {
